@@ -1,0 +1,4 @@
+pydantic[networks]
+requests
+aiohttp
+aiohttp_socks
