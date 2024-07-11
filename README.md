@@ -2,7 +2,7 @@
 [![Telegram channel](https://img.shields.io/endpoint?url=https://runkit.io/damiankrawczyk/telegram-badge/branches/master?url=https://t.me/bots_forge)](https://t.me/bots_forge)
 
 An analogue of [better-proxy](https://github.com/alenkimov/better_proxy) by [alenkimov](https://github.com/alenkimov), but with string-like behavior, support for mobile proxies, and proxy checking functions. ProxyStr is heavier than *better-proxy* and requires **requests** and **aiohttp**, but if you need proxies, you will likely need these libraries anyway.
-`isinstance(Proxy('127.0.0.1:3001'), str)  # --> True` 
+```isinstance(Proxy('127.0.0.1:3001'), str)  # --> True```
 ```bash
 pip install proxystr
 ```
@@ -135,7 +135,7 @@ good_proxies, bad_proxies = check_proxies(proxies)
 ```
 Another available functions: `check_proxy` for single proxy, `acheck_proxy` and `acheck_proxies` for async use cases
 Note that sync functions just wrap async functions
-- **You can get a proxy info while checking it
+- **You can get a proxy info while checking it**
 ```python
 from proxystr import Proxy, check_proxies
 
@@ -153,6 +153,7 @@ output
 {'country': 'Germany', 'countryCode': 'DE', 'city': 'Frankfurt am Main', 'query': '210.173.88.78'}
 ```
 >You can add yours `fields` argument to get another info. More details on [ip-api.com](https://ip-api.com/docs/api:json)
+
 >Another simple way to get info is a sync method `proxy.get_info() -> Dict` or async `await proxy.aget_info() -> Dict`
 ## Pydantic compatibility
 ```python
