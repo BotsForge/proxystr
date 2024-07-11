@@ -10,7 +10,7 @@ packages = [{include = "proxystr"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-pydantic[networks] = {extras = ["networks"]}
+pydantic = {extras = ["networks"]}
 requests = ""
 aiohttp = ""
 aiohttp_socks = ""
