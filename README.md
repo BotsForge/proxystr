@@ -101,8 +101,8 @@ login:password@210.173.88.77:3001
 {'proxy': Proxy(http://login:password@210.173.88.77:3001)}
 http://login:password@210.173.88.77:3001
 {'http': 'http://login:password@210.173.88.77:3001', 'https': 'http://login:password@210.173.88.77:3001'}
-{'server': 'http://210.173.88.77:3001', 'password': 'password', 'username': 'login'}
 {'protocol': 'http', 'username': 'login', 'password': 'password', 'ip': '210.173.88.77', 'port': 3001, 'rotation_url': None}
+{'server': 'http://210.173.88.77:3001', 'password': 'password', 'username': 'login'}
 ```
 - **You can change default pattern**
 ```python
