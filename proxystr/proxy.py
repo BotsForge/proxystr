@@ -78,58 +78,6 @@ class ProxyPattern(str):
 
 
 class Proxy(str, metaclass=_ExtraTypeConstructor):
-    """
-    Можно скармливать в любом виде:
-    proxy = Proxy('http://logi4n:pa4ss@112.132.0.1:8000')
-    proxy = Proxy('logi4n:pa4ss@112.132.0.1:8000')
-    proxy = Proxy('112.132.0.1:8000')
-    proxy = Proxy('112.132.0.1:8000:logi4n:pa4ss')
-    ...
-
-    By default proxy type (protocol) is 'http':
-    proxy = Proxy('logi4n:pa4ss@112.132.0.1:8000')
-    print(proxy.url)  # http://logi4n:pa4ss@112.132.0.1:8000
-
-    Можно скормить сразу протокол (тип прокси)
-    proxy = Proxy('logi4n:pa4ss@112.132.0.1:8000', 'socks5')
-    print(proxy.url)  # socks5://logi4n:pa4ss@112.132.0.1:8000
-
-    Но если прокси передаются полной ссылкой, то приоритет у переданного в аргументах:
-    proxy = Proxy('http://logi4n:pa4ss@112.132.0.1:8000', 'socks5')
-    print(proxy.url)  # socks5://logi4n:pa4ss@112.132.0.1:8000
-
-    str(proxy) - возвращет str согласно шаблону default_pattern
-    По умолчанию default_pattern = 'username:password@ip:port'
-    Можно его изменить для всего класса, напр:
-    Proxy.set_default_pattern('ip:port:username:password')
-    Proxy.set_default_pattern('protocol://username:password@ip:port')
-
-    ВАЖНО!:
-    Класс имеет поведение строки. Его можно дампить в json, или напряму передавать в любые
-    функции, принимающие прокси. Нужно только следить за форматом default_pattern, т.к. в момент
-    создания объекта его строковое представление приводится к default_pattern
-
-    если нужно "на лету" создать новое строкове представление объекта - нужно создать новый объект
-    предварительно установив для класса нужный default_pattern.
-    ---------------------
-
-    Пользовательский функционал:
-        classmethods: set_default_pattern(pattern: str)
-
-        Атрибуты: protocol, ip, port, username, password
-        Свойства: url, proxies
-        Методы: json(), check()
-
-    proxy.url вернет формат 'protocol://username:password@ip:port'
-    proxy.proxies вернет готовый словарь для requests
-    json() вернет словарь с атрибутами.
-    check() отправляет запрос на ip-api и возвращает словарь
-
-    Все атрибуты класса - not writable. Но можно добавлять свои атрибуты в объект.
-
-    Объекты хешируются и проверяют равенство не по своему строковому представлению
-    согласно defaul_pattern, а по url.
-    """
     default_pattern = ProxyPattern('username:password@ip:port')
     _protected_attributes = ('protocol', 'username', 'password', 'ip', 'port', 'rotation_url')
 
