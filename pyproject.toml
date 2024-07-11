@@ -9,8 +9,8 @@ repository = "https://github.com/BotsForge/proxystr"
 packages = [{include = "proxystr"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
-pydantic[networks] = ""
+python = "^3.8"
+pydantic[networks] = {extras = ["networks"]}
 requests = ""
 aiohttp = ""
 aiohttp_socks = ""
