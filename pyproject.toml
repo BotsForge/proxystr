@@ -8,6 +8,10 @@ readme = "README.md"
 repository = "https://github.com/BotsForge/proxystr"
 packages = [{include = "proxystr"}]
 
+[tool.poetry.urls]
+Homepage = "https://github.com/BotsForge/proxystr"
+Issues = "https://github.com/BotsForge/proxystr/issues"
+
 [tool.poetry.dependencies]
 python = "^3.8"
 pydantic = {extras = ["networks"], version = "*"}
