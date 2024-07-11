@@ -3,14 +3,12 @@ name = "proxystr"
 version = "1.0.0"
 description = "Use a proxy as a string, but achieve broad functionality for various scenarios"
 authors = ["MrSmith06 <sletars@gmail.com>"]
+maintainers = ["BotsForge <pucdmitrij8@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/BotsForge/proxystr"
+homepage = "https://github.com/BotsForge/proxystr"
 packages = [{include = "proxystr"}]
-
-[tool.poetry.urls]
-Homepage = "https://github.com/BotsForge/proxystr"
-Issues = "https://github.com/BotsForge/proxystr/issues"
 
 [tool.poetry.dependencies]
 python = "^3.8"
