@@ -1,9 +1,8 @@
 [tool.poetry]
 name = "proxystr"
-version = "1.0.0"
+version = "2.0.0"
 description = "Use a proxy as a string, but achieve broad functionality for various scenarios"
 authors = ["MrSmith06 <sletars@gmail.com>"]
-maintainers = ["BotsForge <pucdmitrij8@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/BotsForge/proxystr"
@@ -12,10 +11,9 @@ packages = [{include = "proxystr"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-pydantic = {extras = ["networks"], version = "*"}
-requests = "*"
-aiohttp = "*"
-aiohttp_socks = "*"
+pydantic = "^2.0"
+httpx = "^0.22"
+httpx-socks = "^0.8"
 
 [build-system]
 requires = ["poetry-core"]

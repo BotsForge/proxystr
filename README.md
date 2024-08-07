@@ -1,12 +1,14 @@
 # ProxyStr
 [![Telegram channel](https://img.shields.io/endpoint?url=https://runkit.io/damiankrawczyk/telegram-badge/branches/master?url=https://t.me/bots_forge)](https://t.me/bots_forge)
 
-An analogue of [better-proxy](https://github.com/alenkimov/better_proxy) by [alenkimov](https://github.com/alenkimov), but with string-like behavior, support for mobile proxies, and proxy checking functions. ProxyStr is heavier than *better-proxy* and requires **requests** and **aiohttp**, but if you need proxies, you will likely need these libraries anyway.
-```isinstance(Proxy('127.0.0.1:3001'), str)  # --> True```
+An analogue of [better-proxy](https://github.com/alenkimov/better_proxy) by [alenkimov](https://github.com/alenkimov), but with string-like behavior, support for mobile proxies, and proxy checking functions. ProxyStr is heavier than *better-proxy* and requires **httpx** but if you need proxies, you will likely need this library anyway.
+```python
+isinstance(Proxy('127.0.0.1:3001'), str)  # --> True
+```
 ```bash
 pip install proxystr
 ```
-Full list of depencies: `pydantic[networks], requests, aiohttp, aiohttp_socks`
+Full list of depencies: `pydantic, httpx, httpx-socks`
 ## Supports various proxy formats
 ```python
 from proxystr import Proxy
@@ -24,6 +26,16 @@ Proxy('http://login:password@host:port[https://rotate.my-proxy.io?api_key=your_a
 ...
 ```
 P.S. The string parsing method was copied from [better-proxy](https://github.com/alenkimov/better_proxy).
+
+## New in v 2.0:
+- both `requests` and `aiohttp` changed to one lib `httpx`
+- new methods `Proxy.check()` and `Proxy.acheck()`
+- proxy checking functions got a new parameter `raise_on_error` defaults to False
+- now it is possible to inherit from the Proxy class and pass the new class to the Pydantic BaseModel without an error
+- `check_proxy()` now is fully sync
+- `check_proxies()` can be called with arg `use_async=False` (not recommended but if u really need this u can use it)
+- tests added
+- a lot of small fixes
 
 ## Common use cases
 - **aiohttp**
@@ -64,6 +76,46 @@ proxy = Proxy("login:password@210.173.88.77:3001")
 def fetch(url):
     response = requests.get(url, proxies=proxy.dict)    
     return response.text
+```
+
+- **httpx**
+```python
+import httpx
+from proxystr import Proxy
+
+proxy = Proxy("login:password@210.173.88.77:3001")
+
+async def fetch(url):
+    async with httpx.AsyncClient(proxy=proxy.url, follow_redirects=True) as client:
+            response = await client.get(url)
+            return response.text
+# or
+def sync_fetch(url):
+    with httpx.Client(proxy=proxy.url, follow_redirects=True) as client:
+            return client.get(url).text
+# or
+def simple_fetch(url):
+    return httpx.get(url, proxy=proxy.url, follow_redirects=True).text
+```
+
+- **httpx-socks**
+```python
+import httpx
+from httpx_socks import AsyncProxyTransport, SyncProxyTransport
+from proxystr import Proxy
+
+proxy = Proxy("socks5://login:password@210.173.88.77:3001")
+
+async def fetch(url):
+    transport = AsyncProxyTransport.from_url(proxy.url)
+    async with httpx.AsyncClient(transport=transport, follow_redirects=True) as client:
+            response = await client.get(url)
+            return response.text
+# or
+def sync_fetch(url):
+    transport = SyncProxyTransport.from_url(proxy.url)
+    with httpx.Client(transport=transport, follow_redirects=True) as client:
+            return client.get(url).text
 ```
 
 - **playwright**
@@ -132,9 +184,14 @@ proxies = [
     Proxy("login:password@210.173.88.78:3002")
 ]
 good_proxies, bad_proxies = check_proxies(proxies)
+
+# or for single proxy:
+proxy = Proxy("login:password@210.173.88.77:3001")
+if proxy.check():
+    '''do_something'''
 ```
 Another available functions: `check_proxy` for single proxy, `acheck_proxy` and `acheck_proxies` for async use cases
-Note that sync functions just wrap async functions
+Note that sync `check_proxies()` by default just wraps async `acheck_proxies()`
 - **You can get a proxy info while checking it**
 ```python
 from proxystr import Proxy, check_proxies
@@ -209,6 +266,9 @@ class `Proxy`
 | playwright | property | TypedDict |  |
 | json() | method | dict | all attributes |
 | get_info() | method | dict | info like country etc. |
+| aget_info() | method | dict | async version of `get_info()` |
+| check() | method | bool | simple proxy check |
+| acheck() | method | dict | async version of `check()` |
 | set_default_pattern() | classmethod | None | changes `__str__` pattern |
 | rotate() | method | bool | sync function to rotate mobile proxy |
 | arotate() | method | bool | async version of `rotate()` |

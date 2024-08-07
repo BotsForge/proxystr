@@ -165,7 +165,7 @@ cython_debug/
 # Custom files
 admtools
 *.bat
-test*.*
+utest*.*
 *.js
 logo.*
 *.7z
