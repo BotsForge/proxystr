@@ -177,13 +177,17 @@ http://210.173.88.77:3001:login:password[https://rotate.my-proxy.io/?api_key=you
 
 ## Proxy checking
 ```python
-from proxystr import Proxy, check_proxies
+from proxystr import Proxy, check_proxies, read_proxies
 
 proxies = [
     Proxy("login:password@210.173.88.77:3001"),
     Proxy("login:password@210.173.88.78:3002")
 ]
 good_proxies, bad_proxies = check_proxies(proxies)
+# or in raw str format:
+good_proxies, bad_proxies = check_proxies(["log:pass@210.173.88.77:3001", "log:pass@210.173.88.78:3002"])
+# or read from file and check
+good_proxies, bad_proxies = check_proxies(read_proxies('proxies.txt'))
 
 # or for single proxy:
 proxy = Proxy("login:password@210.173.88.77:3001")
@@ -203,6 +207,10 @@ proxies = [
 good_proxies, bad_proxies = check_proxies(proxies, with_info=True)
 for proxy, info in good_proxies:
     print(info)
+
+# or for single proxy:
+proxy = Proxy("login:password@210.173.88.77:3001")
+print(proxy.get_info())
 ```
 output
 ```
