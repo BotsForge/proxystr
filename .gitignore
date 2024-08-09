@@ -170,6 +170,7 @@ utest*.*
 logo.*
 *.7z
 supatest.py
+poetry.lock
 
 # Custom directories
 cache/

@@ -268,7 +268,7 @@ class `Proxy`
 | get_info() | method | dict | info like country etc. |
 | aget_info() | method | dict | async version of `get_info()` |
 | check() | method | bool | simple proxy check |
-| acheck() | method | dict | async version of `check()` |
+| acheck() | method | bool | async version of `check()` |
 | set_default_pattern() | classmethod | None | changes `__str__` pattern |
 | rotate() | method | bool | sync function to rotate mobile proxy |
 | arotate() | method | bool | async version of `rotate()` |
