@@ -32,6 +32,8 @@ class Proxy(str, metaclass=_ExtraTypeConstructor):
     _protected_attributes = ('protocol', 'username', 'password', 'ip', 'port', 'rotation_url')
 
     def __new__(cls, proxy: str, /, protocol=None):
+        if isinstance(proxy, Proxy):
+            proxy = get_fromated_proxy_string(proxy, 'protocol://username:password@ip:port[rotation_url]')
         proxy = ProxyStringParser.from_string(proxy)
         if protocol:
             proxy.protocol = protocol
