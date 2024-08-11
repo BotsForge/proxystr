@@ -4,6 +4,7 @@ from pydantic.networks import HttpUrl
 
 from .proxy import Proxy as BaseProxy
 from .check import check_proxy, acheck_proxy, DEFAULT_CHECK_FIELDS, URL_FOR_CHECK
+from .client import Client, AsyncClient
 
 
 class Proxy(BaseProxy):
@@ -20,3 +21,9 @@ class Proxy(BaseProxy):
 
     async def acheck(self, url: HttpUrl = URL_FOR_CHECK, raise_on_error=False) -> bool:
         return (await acheck_proxy(self, url=url, raise_on_error=raise_on_error))[1]
+
+    def get_client(self) -> Client:
+        return Client(proxy=self)
+
+    def get_async_client(self) -> AsyncClient:
+        return AsyncClient(proxy=self)

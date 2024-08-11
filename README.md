@@ -36,6 +36,9 @@ P.S. The string parsing method was copied from [better-proxy](https://github.com
 - `check_proxies()` can be called with arg `use_async=False` (not recommended but if u really need this u can use it)
 - tests added
 - a lot of small fixes
+### New in v 2.1:
+- `Client` and `AsyncClient` added
+- new methods `Proxy.get_client()` and `Proxy.get_async_client()`
 
 ## Common use cases
 - **aiohttp**
@@ -87,12 +90,12 @@ proxy = Proxy("login:password@210.173.88.77:3001")
 
 async def fetch(url):
     async with httpx.AsyncClient(proxy=proxy.url, follow_redirects=True) as client:
-            response = await client.get(url)
-            return response.text
+        response = await client.get(url)
+        return response.text
 # or
 def sync_fetch(url):
     with httpx.Client(proxy=proxy.url, follow_redirects=True) as client:
-            return client.get(url).text
+        return client.get(url).text
 # or
 def simple_fetch(url):
     return httpx.get(url, proxy=proxy.url, follow_redirects=True).text
@@ -109,13 +112,36 @@ proxy = Proxy("socks5://login:password@210.173.88.77:3001")
 async def fetch(url):
     transport = AsyncProxyTransport.from_url(proxy.url)
     async with httpx.AsyncClient(transport=transport, follow_redirects=True) as client:
-            response = await client.get(url)
-            return response.text
+        response = await client.get(url)
+        return response.text
 # or
 def sync_fetch(url):
     transport = SyncProxyTransport.from_url(proxy.url)
     with httpx.Client(transport=transport, follow_redirects=True) as client:
-            return client.get(url).text
+        return client.get(url).text
+```
+- **httpx wrapped by proxystr**
+```python
+from proxystr import Proxy, Client, AsyncClient
+
+proxy = Proxy("log:pass@210.173.88.77:3001")  # or "socks5://log:pass@210.173.88.77:3001"
+
+async def fetch(url):
+    async with AsyncClient(proxy=proxy) as client:
+        response = await client.get(url)
+        return response.text
+    # or
+    async with proxy.get_async_client() as client:
+        response = await client.get(url)
+        return response.text
+        
+# or
+def sync_fetch(url):
+    with Client(proxy=proxy) as client:
+        return client.get(url).text
+    # or
+    with proxy.get_client() as client:
+        return client.get(url).text
 ```
 
 - **playwright**
@@ -282,11 +308,15 @@ class `Proxy`
 | arotate() | method | bool | async version of `rotate()` |
 | refresh() | method | bool | same as rotate |
 | arefresh() | method | bool | same as arotate |
+| get_client() | method | httpx.Client | with proxy included |
+| get_async_client() | method | httpx.AsyncClient | with proxy included |
 
 module `proxystr`
 | name | input | output | description |
 | ------ | ------ | ------ | ------ |
 | Proxy | str | Proxy object (str) |  |
+| Client | **kwargs | httpx.Client object | arg `proxy` takes http and socks proxy |
+| AsyncClient | **kwargs | httpx.AsyncClient object | arg `proxy` takes http and socks proxy |
 | check_proxy() | Proxy | Tuple[Proxy, bool] |  |
 | check_proxies() | Sequence[Proxy] | Tuple[List[Proxy], List[Proxy]] | returns good and failed proxies |
 | acheck_proxy() | -- | -- | async version of `check_proxy()` |

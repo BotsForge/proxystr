@@ -6,6 +6,7 @@ from httpx_socks import AsyncProxyTransport, SyncProxyTransport
 from python_socks._errors import ProxyConnectionError
 
 from .proxy import Proxy
+from .client import Client, AsyncClient
 
 URL_FOR_CHECK = 'https://whoer.net'
 URL_FOR_CHECK_WHITH_INFO = 'http://ip-api.com/json/?fields={fields}'
@@ -19,7 +20,6 @@ async def acheck_proxy(
     fields: str = DEFAULT_CHECK_FIELDS,
     raise_on_error: bool = False
 ) -> Tuple[Proxy, Union[bool, Dict]]:
-
     if not isinstance(proxy, Proxy):
         proxy = Proxy(proxy)
 
@@ -27,14 +27,7 @@ async def acheck_proxy(
         url = URL_FOR_CHECK_WHITH_INFO.format(fields=fields) if with_info else URL_FOR_CHECK
 
     try:
-        if 'http' in proxy.protocol:
-            kwargs = {'proxy': proxy.url}
-        elif 'socks' in proxy.protocol:
-            kwargs = {'transport': AsyncProxyTransport.from_url(proxy.url)}
-        else:
-            raise ValueError(f'Unsupported proxy protocol "{proxy.protocol}".')
-
-        async with httpx.AsyncClient(timeout=10, follow_redirects=True, **kwargs) as client:
+        async with AsyncClient(proxy=proxy, timeout=10) as client:
             response = await client.get(url)
             if response.status_code == 200:
                 if with_info:
@@ -80,7 +73,6 @@ def check_proxy(
     fields: str = DEFAULT_CHECK_FIELDS,
     raise_on_error: bool = False
 ) -> Tuple[Proxy, Union[bool, Dict]]:
-
     if not isinstance(proxy, Proxy):
         proxy = Proxy(proxy)
 
@@ -88,14 +80,7 @@ def check_proxy(
         url = URL_FOR_CHECK_WHITH_INFO.format(fields=fields) if with_info else URL_FOR_CHECK
 
     try:
-        if 'http' in proxy.protocol:
-            kwargs = {'proxy': proxy.url}
-        elif 'socks' in proxy.protocol:
-            kwargs = {'transport': SyncProxyTransport.from_url(proxy.url)}
-        else:
-            raise ValueError(f'Unsupported proxy protocol "{proxy.protocol}".')
-
-        with httpx.Client(timeout=10, follow_redirects=True, **kwargs) as client:
+        with Client(timeout=10, proxy=proxy) as client:
             response = client.get(url)
             if response.status_code == 200:
                 if with_info:
