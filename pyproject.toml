@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "proxystr"
-version = "2.1.0"
+version = "2.1.1"
 description = "Use a proxy as a string, but achieve broad functionality for various scenarios"
 authors = ["MrSmith06 <sletars@gmail.com>"]
 license = "MIT"

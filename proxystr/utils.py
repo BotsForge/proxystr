@@ -71,9 +71,9 @@ class ProxyStringParser(BaseModel, validate_assignment=True):
 
 def get_fromated_proxy_string(proxy: Union['Proxy', ProxyStringParser], pattern: 'ProxyPattern') -> str:
     if not all((proxy.username, proxy.password)):
-        pattern = re.sub(r'\W?username\Wpassword\W?', '', pattern)
+        pattern = re.sub(r'[^a-zA-Z0-9_/]?username[^a-zA-Z0-9_/]password[^a-zA-Z0-9_/]?', '', pattern)
     if not proxy.rotation_url:
-        pattern = re.sub(r'\W?rotation_url\W?', '', pattern)
+        pattern = re.sub(r'[^a-zA-Z0-9_/]?rotation_url[^a-zA-Z0-9_/]?', '', pattern)
 
     parts = re.findall(r'\w+', pattern)
     pattern = re.sub(r'\w+', '{}', pattern)
