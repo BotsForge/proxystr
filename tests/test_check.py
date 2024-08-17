@@ -11,6 +11,8 @@ from proxystr import Proxy, check_proxies, check_proxy, acheck_proxies, acheck_p
 
 REAL_HTTP_PROXY = 'your_real_http_proxy_in_any_format'
 REAL_SOCKS5_PROXY = 'socks5://your_real_socks5_proxy_in_any_format'
+REAL_HTTP_PROXY = 'bAgVACbi:fZhLpcBy@212.193.182.47:64876'
+REAL_SOCKS5_PROXY = 'socks5://84.246.87.118:49347:bAgVACbi:fZhLpcBy'
 
 
 class TestCheck(unittest.TestCase):

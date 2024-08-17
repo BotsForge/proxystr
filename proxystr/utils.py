@@ -78,8 +78,3 @@ def get_fromated_proxy_string(proxy: Union['Proxy', ProxyStringParser], pattern:
     parts = re.findall(r'\w+', pattern)
     pattern = re.sub(r'\w+', '{}', pattern)
     return pattern.format(*(proxy.__dict__[p] for p in parts))
-
-
-def read_proxies(filepath: str) -> List['Proxy']:
-    with open(filepath) as file:
-        return [Proxy(i.strip()) for i in file.readlines() if i.strip()]
