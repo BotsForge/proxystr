@@ -28,7 +28,7 @@ class ProxyPattern(str):
 
 
 class Proxy(str, metaclass=_ExtraTypeConstructor):
-    default_pattern = ProxyPattern('username:password@ip:port')
+    default_pattern = ProxyPattern('protocol://username:password@ip:port')
     _protected_attributes = ('protocol', 'username', 'password', 'ip', 'port', 'rotation_url')
 
     def __new__(cls, proxy: str, /, protocol=None):

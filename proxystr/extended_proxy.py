@@ -3,13 +3,14 @@ import asyncio
 
 from pydantic.networks import HttpUrl
 import httpx
-from python_socks._errors import ProxyConnectionError
+from python_socks._errors import ProxyConnectionError, ProxyTimeoutError
 
 from .proxy import Proxy as BaseProxy
 from .client import Client, AsyncClient
 
 
-URL_FOR_CHECK = 'https://whoer.net'
+URL_FOR_CHECK = 'https://api.ipify.org/?format=json'
+# URL_FOR_CHECK = 'https://whoer.net'
 URL_FOR_CHECK_WHITH_INFO = 'http://ip-api.com/json/?fields={fields}'
 DEFAULT_CHECK_FIELDS = '8211'
 
@@ -57,7 +58,7 @@ async def acheck_proxy(
                     return proxy, response.json()
                 return proxy, True
 
-    except (httpx.HTTPError, ProxyConnectionError, asyncio.TimeoutError) as er:
+    except (httpx.HTTPError, ProxyConnectionError, ProxyTimeoutError, asyncio.TimeoutError) as er:
         if raise_on_error:
             raise type(er)(f"{proxy.url} --> {er}").with_traceback(er.__traceback__)
         return proxy, False
@@ -110,7 +111,7 @@ def check_proxy(
                     return proxy, response.json()
                 return proxy, True
 
-    except (httpx.HTTPError, ProxyConnectionError) as er:
+    except (httpx.HTTPError, ProxyConnectionError, ProxyTimeoutError) as er:
         if raise_on_error:
             raise type(er)(f"{proxy.url} --> {er}").with_traceback(er.__traceback__)
         return proxy, False
